@@ -1,0 +1,12 @@
+{
+	"name": "LsAzureBlobStorage",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=aarnastorage;EndpointSuffix=core.windows.net;",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY2RjRFNzkwLTM5NDYtNDhDMi1COTY4LTRCODM2MkY5MTYxNl9iY2JmOTA3Yi1hYmY3LTQxOTMtYjllMi0yMDVmNTJhNDg4ODIiDQp9"
+		}
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"name": "ADFAarna",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ff750a5b-8282-4abe-af3b-a484f0ad3949",
+		"tenantId": "0cdcb198-8169-4b70-ba9f-da7e3ba700c2"
+	}
+}

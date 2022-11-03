@@ -1,0 +1,46 @@
+{
+	"name": "S3srcMultiCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LsAmazonS3src",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"PS3Srcmultifile": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AmazonS3Location",
+				"bucketName": "s3srcforadf",
+				"folderPath": "maa",
+				"fileName": {
+					"value": "@dataset().PS3Srcmultifile",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "Phone number",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,42 @@
+{
+	"name": "DsDelimitedTextSrcforlatestfile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LsAmazonS3src",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"LatestfileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AmazonS3Location",
+				"bucketName": "s3srcforadf",
+				"folderPath": "maa",
+				"fileName": {
+					"value": "@dataset().LatestfileName",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
