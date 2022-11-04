@@ -4,6 +4,9 @@
 	"parameters": {
 		"factoryName": {
 			"value": "ADFAarna"
+		},
+		"LsAzureBlobSCsv_connectionString": {
+			"value": ""
 		}
 	}
 }

@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "ADFAarna"
 		},
+		"LsAzureBlobSCsv_connectionString": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},

@@ -6,6 +6,10 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ADFAarna"
+		},
+		"LsAzureBlobSCsv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LsAzureBlobSCsv'"
 		}
 	},
 	"variables": {
@@ -35,6 +39,330 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LsAzureBlobSCsv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('LsAzureBlobSCsv_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LsAzureBlobSCsv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "InPut",
+						"container": "containeaarna"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LsAzureBlobSCsv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DsBlobcsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LsAzureBlobSCsv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "OPDept",
+						"container": "opaarnacontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LsAzureBlobSCsv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Mappingdataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateItDept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateHRDept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateParolDept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateNotHrDept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateNotItDept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateNotParolDept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DsBlobcsv",
+								"type": "DatasetReference"
+							},
+							"name": "SeperateotherDept"
+						}
+					],
+					"transformations": [
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          EmpID as short,",
+						"          Name as string,",
+						"          Country as string,",
+						"          DeptName as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: true,",
+						"     limit: 100,",
+						"     ignoreNoFilesFound: false,",
+						"     partitionBy('hash', 1)) ~> source1",
+						"source1 sort(asc(EmpID, true)) ~> sort1",
+						"sort1 split(equals(DeptName,'IT'),",
+						"     equals(DeptName,'HR'),",
+						"     equals(DeptName,'Payroll'),",
+						"     notEquals(DeptName,'HR'),",
+						"     notEquals(DeptName,'IT'),",
+						"     notEquals(DeptName,'Payroll'),",
+						"     disjoint: false) ~> split1@(ItDept, HrDept, ParolDept, NotHrDept, NotItDept, NotPayrollDept, OtherDept)",
+						"split1@ItDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateItDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateItDept",
+						"split1@HrDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateHRDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateHRDept",
+						"split1@ParolDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateParolDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateParolDept",
+						"split1@NotHrDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateNotHrDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateNotHrDept",
+						"split1@NotItDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateNotItDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateNotItDept",
+						"split1@NotPayrollDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateNotParolDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateNotParolDept",
+						"split1@OtherDept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Column_1 as string,",
+						"          Column_2 as string,",
+						"          Column_3 as string",
+						"     ),",
+						"     partitionFileNames:['SeperateotherDept'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> SeperateotherDept"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/DsBlobcsv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/plConditionalsplit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flowConditionalsplit",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Mappingdataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"SeperateItDept": {},
+									"SeperateHRDept": {},
+									"SeperateParolDept": {},
+									"SeperateNotHrDept": {},
+									"SeperateNotItDept": {},
+									"SeperateNotParolDept": {},
+									"SeperateotherDept": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Mappingdataflow')]"
+			]
 		}
 	]
 }
