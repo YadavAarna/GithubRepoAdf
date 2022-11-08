@@ -10,27 +10,34 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "EmpwithDeptName.csv",
 				"folderPath": "InPut",
 				"container": "containeaarna"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
+				"name": "EmpID",
 				"type": "String"
 			},
 			{
+				"name": "Name",
 				"type": "String"
 			},
 			{
+				"name": "Country",
 				"type": "String"
 			},
 			{
+				"name": "DeptName",
 				"type": "String"
 			},
 			{
+				"name": "JoinDate",
 				"type": "String"
 			}
 		]
