@@ -24,15 +24,14 @@
 				"          Name as string,",
 				"          Country as string,",
 				"          DeptName as string,",
-				"          JoinDate as string",
+				"          JoinDate as date",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     partitionBy('hash', 1)) ~> Src",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false) ~> Src",
 				"Src split(isNull(toDate(JoinDate,'dd-mm-yyyy')),",
-				"     disjoint: false,",
-				"     partitionBy('hash', 1)) ~> Conditionalsplit1@(Errorowa, Goodrows)"
+				"     disjoint: false) ~> Conditionalsplit1@(Errorowa, Goodrows)"
 			]
 		}
 	}
