@@ -13,7 +13,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          EmpID as string,",
@@ -25,7 +29,9 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     partitionBy('hash', 1)) ~> Src"
+				"     partitionBy('hash', 1)) ~> Src",
+				"Src split(isNull(toDate(JoinDate, 'dd-mmm-yyyy')),",
+				"     disjoint: false) ~> split1@(Errorowa, Goodrows)"
 			]
 		}
 	}
