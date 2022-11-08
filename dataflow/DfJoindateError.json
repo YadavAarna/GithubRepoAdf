@@ -30,8 +30,9 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     partitionBy('hash', 1)) ~> Src",
-				"Src split(isNull(toDate(JoinDate, 'dd-mmm-yyyy')),",
-				"     disjoint: false) ~> split1@(Errorowa, Goodrows)"
+				"Src split(isNull(toDate(JoinDate,'dd-mm-yyyy')),",
+				"     disjoint: false,",
+				"     partitionBy('hash', 1)) ~> split1@(Errorowa, Goodrows)"
 			]
 		}
 	}
