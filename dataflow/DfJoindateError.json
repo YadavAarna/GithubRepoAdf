@@ -15,7 +15,7 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "split1"
+					"name": "Conditionalsplit1"
 				}
 			],
 			"scriptLines": [
@@ -32,7 +32,7 @@
 				"     partitionBy('hash', 1)) ~> Src",
 				"Src split(isNull(toDate(JoinDate,'dd-mm-yyyy')),",
 				"     disjoint: false,",
-				"     partitionBy('hash', 1)) ~> split1@(Errorowa, Goodrows)"
+				"     partitionBy('hash', 1)) ~> Conditionalsplit1@(Errorowa, Goodrows)"
 			]
 		}
 	}
