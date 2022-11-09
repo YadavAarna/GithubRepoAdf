@@ -12,7 +12,15 @@
 					"name": "Src"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DsSinkSqlServertable",
+						"type": "DatasetReference"
+					},
+					"name": "ErrorData"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Conditionalsplit1"
@@ -31,7 +39,30 @@
 				"     limit: 100,",
 				"     ignoreNoFilesFound: false) ~> Src",
 				"Src split(isNull(toDate(JoinDate,'dd-MMM-yyyy')),",
-				"     disjoint: false) ~> Conditionalsplit1@(Errorowa, Goodrows)"
+				"     disjoint: false) ~> Conditionalsplit1@(Errorowa, Goodrows)",
+				"Conditionalsplit1@Errorowa sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmpID as integer,",
+				"          Name as string,",
+				"          Country as string,",
+				"          DeptName as string,",
+				"          JoinDate as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Country,",
+				"          DeptName,",
+				"          JoinDate",
+				"     )) ~> ErrorData"
 			]
 		}
 	}
