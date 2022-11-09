@@ -1,0 +1,31 @@
+{
+	"name": "DS_S3_Copy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LsAmazonS3src",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"S3Filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AmazonS3Location",
+				"bucketName": "s3srcforadf",
+				"folderPath": "maa",
+				"fileName": {
+					"value": "@dataset().S3Filename",
+					"type": "Expression"
+				}
+			},
+			"sheetIndex": 1,
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText1",
+	"name": "DSJoindateError",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LsAzureBlobSCsv",
@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "EmpwithDeptName.csv",
 				"folderPath": "InPut",
 				"container": "containeaarna"
 			},
@@ -20,18 +21,25 @@
 		},
 		"schema": [
 			{
+				"name": "EmpID",
 				"type": "String"
 			},
 			{
+				"name": "Name",
 				"type": "String"
 			},
 			{
+				"name": "Country",
 				"type": "String"
 			},
 			{
+				"name": "DeptName",
+				"type": "String"
+			},
+			{
+				"name": "JoinDate",
 				"type": "String"
 			}
 		]
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

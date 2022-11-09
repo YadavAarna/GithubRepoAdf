@@ -84,7 +84,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     partitionBy('hash', 1)) ~> source1",
 				"source1 sort(asc(EmpID, true)) ~> sort1",
-				"sort1 split(equals(DeptName,'IT') ,",
+				"sort1 split(equals(DeptName,'IT'),",
 				"     equals(DeptName,'HR'),",
 				"     equals(DeptName,'Payroll'),",
 				"     notEquals(DeptName,'HR'),",

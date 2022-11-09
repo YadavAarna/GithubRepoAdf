@@ -1,27 +1,32 @@
 {
-	"name": "DelimitedText1",
+	"name": "DsDelimitedTextSrcforlatestfile",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LsAzureBlobSCsv",
+			"referenceName": "LsAmazonS3src",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"LatestfileName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": "InPut",
-				"container": "containeaarna"
+				"type": "AmazonS3Location",
+				"bucketName": "s3srcforadf",
+				"folderPath": "maa",
+				"fileName": {
+					"value": "@dataset().LatestfileName",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
-			{
-				"type": "String"
-			},
 			{
 				"type": "String"
 			},

@@ -1,0 +1,79 @@
+{
+	"name": "DfJoindateError",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DSJoindateError",
+						"type": "DatasetReference"
+					},
+					"name": "Src"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DSErrorrowsbadop",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DSErrorrowsbadop",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Conditionalsplit1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EmpID as string,",
+				"          Name as string,",
+				"          Country as string,",
+				"          DeptName as string,",
+				"          JoinDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false) ~> Src",
+				"Src split(isNull(toDate(JoinDate,'dd-MMM-yyyy')),",
+				"     disjoint: false) ~> Conditionalsplit1@(Errorowa, Goodrows)",
+				"Conditionalsplit1@Errorowa sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Errorbaddate'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Country,",
+				"          DeptName,",
+				"          JoinDate",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"Conditionalsplit1@Goodrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['ErroropGooddate'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Country,",
+				"          DeptName,",
+				"          JoinDate",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink2"
+			]
+		}
+	}
+}

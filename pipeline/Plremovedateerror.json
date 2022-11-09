@@ -1,9 +1,9 @@
 {
-	"name": "plConditionalsplit",
+	"name": "Plremovedateerror",
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flowConditionalsplit",
+				"name": "Data flowErrorrows",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,19 +16,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Mappingdataflow",
+						"referenceName": "DfJoindateError",
 						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "Coarse"
 				}
 			}
 		],
-		"annotations": [],
-		"lastPublishTime": "2022-11-04T15:59:37Z"
-	},
-	"type": "Microsoft.DataFactory/factories/pipelines"
+		"annotations": []
+	}
 }

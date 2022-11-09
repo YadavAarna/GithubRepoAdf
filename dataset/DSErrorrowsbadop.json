@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText1",
+	"name": "DSErrorrowsbadop",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LsAzureBlobSCsv",
@@ -10,28 +10,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "InPut",
-				"container": "containeaarna"
+				"folderPath": "ErrorRows",
+				"container": "opaarnacontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			}
-		]
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+		"schema": []
+	}
 }
