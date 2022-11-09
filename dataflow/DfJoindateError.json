@@ -15,10 +15,17 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DsSinkSqlServertable",
+						"referenceName": "DSErrorrowsbadop",
 						"type": "DatasetReference"
 					},
-					"name": "ErrorData"
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DSErrorrowsbadop",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -42,18 +49,7 @@
 				"     disjoint: false) ~> Conditionalsplit1@(Errorowa, Goodrows)",
 				"Conditionalsplit1@Errorowa sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          EmpID as integer,",
-				"          Name as string,",
-				"          Country as string,",
-				"          DeptName as string,",
-				"          JoinDate as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
+				"     partitionFileNames:['Errorbaddate'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -62,7 +58,21 @@
 				"          Country,",
 				"          DeptName,",
 				"          JoinDate",
-				"     )) ~> ErrorData"
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"Conditionalsplit1@Goodrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[''],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Country,",
+				"          DeptName,",
+				"          JoinDate",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink2"
 			]
 		}
 	}
