@@ -1,27 +1,23 @@
 {
-	"name": "DelimitedText1",
+	"name": "DSsrcCSVS3",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LsAzureBlobSCsv",
+			"referenceName": "LsAmazonS3src",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": "InPut",
-				"container": "containeaarna"
+				"type": "AmazonS3Location",
+				"bucketName": "s3srcforadf",
+				"folderPath": "maa"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
-			{
-				"type": "String"
-			},
 			{
 				"type": "String"
 			},

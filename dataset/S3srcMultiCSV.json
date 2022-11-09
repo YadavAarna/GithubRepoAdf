@@ -1,17 +1,26 @@
 {
-	"name": "DelimitedText1",
+	"name": "S3srcMultiCSV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LsAzureBlobSCsv",
+			"referenceName": "LsAmazonS3src",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"PS3Srcmultifile": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": "InPut",
-				"container": "containeaarna"
+				"type": "AmazonS3Location",
+				"bucketName": "s3srcforadf",
+				"folderPath": "maa",
+				"fileName": {
+					"value": "@dataset().PS3Srcmultifile",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
@@ -20,15 +29,15 @@
 		},
 		"schema": [
 			{
+				"name": "Name",
 				"type": "String"
 			},
 			{
+				"name": "Gender",
 				"type": "String"
 			},
 			{
-				"type": "String"
-			},
-			{
+				"name": "Phone number",
 				"type": "String"
 			}
 		]
