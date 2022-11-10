@@ -1,0 +1,32 @@
+{
+	"name": "DFremovedups",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "Dupsrc"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          EmpID as short,",
+				"          Name as string,",
+				"          Country as string,",
+				"          DeptName as string,",
+				"          JoinDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     partitionBy('hash', 1)) ~> Dupsrc"
+			]
+		}
+	}
+}
