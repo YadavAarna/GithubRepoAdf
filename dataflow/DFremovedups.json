@@ -13,7 +13,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          EmpID as short,",
@@ -24,8 +28,9 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     partitionBy('hash', 1)) ~> Dupsrc"
+				"     ignoreNoFilesFound: false) ~> Dupsrc",
+				"Dupsrc aggregate(groupBy(EmpID),",
+				"     each(match(name!='EmpId'), $$ = ERROR_FUNCTION(''))) ~> aggregate1"
 			]
 		}
 	}
