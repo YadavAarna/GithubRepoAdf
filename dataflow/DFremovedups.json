@@ -20,17 +20,18 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          EmpID as short,",
+				"          EmpID as integer,",
 				"          Name as string,",
 				"          Country as string,",
 				"          DeptName as string,",
-				"          JoinDate as string",
+				"          JoinDate as date",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     limit: 100,",
 				"     ignoreNoFilesFound: false) ~> Dupsrc",
 				"Dupsrc aggregate(groupBy(EmpID),",
-				"     each(match(name!='EmpId'), $$ = ERROR_FUNCTION(''))) ~> aggregate1"
+				"     each(match(name !='EmpID'), $$ = ERROR_FUNCTION(''))) ~> aggregate1"
 			]
 		}
 	}
