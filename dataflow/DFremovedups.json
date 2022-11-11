@@ -31,7 +31,8 @@
 				"     limit: 100,",
 				"     ignoreNoFilesFound: false) ~> Dupsrc",
 				"Dupsrc aggregate(groupBy(EmpID),",
-				"     each(match(name!='EmpID'), $$ = ERROR_FUNCTION(''))) ~> aggregate1"
+				"     each(match(name!='EmpID'), $$ = ERROR_FUNCTION('')),",
+				"     partitionBy('hash', 1)) ~> aggregate1"
 			]
 		}
 	}
