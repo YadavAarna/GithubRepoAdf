@@ -1,0 +1,23 @@
+{
+	"name": "DelimitedTextop",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LsAzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "removedup",
+				"container": "opaarnacontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

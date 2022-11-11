@@ -12,7 +12,15 @@
 					"name": "Dupsrc"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedTextop",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "aggregate1"
@@ -32,7 +40,11 @@
 				"     ignoreNoFilesFound: false) ~> Dupsrc",
 				"Dupsrc aggregate(groupBy(EmpID),",
 				"     each(match(name!='EmpID'), $$ = ERROR_FUNCTION('')),",
-				"     partitionBy('hash', 1)) ~> aggregate1"
+				"     partitionBy('hash', 1)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
