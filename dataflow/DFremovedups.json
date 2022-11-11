@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4distinct",
+						"referenceName": "DelimitedText1",
 						"type": "DatasetReference"
 					},
 					"name": "Dupsrc"
