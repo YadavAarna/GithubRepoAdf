@@ -19,6 +19,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "LogSink"
 				}
 			],
 			"transformations": [
@@ -38,7 +45,8 @@
 				"     PipeLineName as string,",
 				"     Status as string,",
 				"     TriggerName as string,",
-				"     RunID as string",
+				"     RunID as string,",
+				"     FileName as string",
 				"}",
 				"source(output(",
 				"          EmpID as integer,",
@@ -81,7 +89,12 @@
 				"          DeptName,",
 				"          JoinDate",
 				"     ),",
-				"     partitionBy('hash', 1)) ~> sink2"
+				"     partitionBy('hash', 1)) ~> sink2",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> LogSink"
 			]
 		}
 	}
