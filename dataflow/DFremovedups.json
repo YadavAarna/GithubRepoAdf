@@ -37,14 +37,17 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 100,",
-				"     ignoreNoFilesFound: false) ~> Dupsrc",
+				"     ignoreNoFilesFound: false,",
+				"     partitionBy('hash', 1)) ~> Dupsrc",
 				"Dupsrc aggregate(groupBy(EmpID),",
-				"     each(match(name!='EmpID'), $$ = ERROR_FUNCTION('')),",
+				"     each(match(name!='EmpID'), $$ = first($$)),",
 				"     partitionBy('hash', 1)) ~> aggregate1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['DistinctEMP'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
