@@ -1,0 +1,45 @@
+{
+	"name": "DelimitedText4distinct",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LsAzureBlobSCsv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ErroropGooddate",
+				"folderPath": "ErrorRows",
+				"container": "opaarnacontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "EmpID",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "DeptName",
+				"type": "String"
+			},
+			{
+				"name": "JoinDate",
+				"type": "String"
+			}
+		]
+	}
+}
