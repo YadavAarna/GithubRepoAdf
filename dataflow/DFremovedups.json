@@ -18,7 +18,7 @@
 						"referenceName": "DelimitedTextop",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -27,9 +27,19 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     ADFName as string,",
+				"     PipeLineName as string,",
+				"     Status as string,",
+				"     TriggerName as string,",
+				"     RunID as string",
+				"}",
 				"source(output(",
 				"          EmpID as integer,",
 				"          Name as string,",
@@ -45,13 +55,33 @@
 				"Dupsrc aggregate(groupBy(EmpID),",
 				"     each(match(name!='EmpID'), $$ = first($$)),",
 				"     partitionBy('hash', 1)) ~> aggregate1",
-				"aggregate1 derive(ADFName = ERROR_FUNCTION('')) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"aggregate1 derive(ADFName = $ADFName,",
+				"          PipleineName = $PipeLineName,",
+				"          Status = $Status,",
+				"          TriggerName = $TriggerName,",
+				"          RunID = $RunID,",
+				"     partitionBy('hash', 1)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          ADFName,",
+				"          PipleineName,",
+				"          Status,",
+				"          TriggerName,",
+				"          RunID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:['DistinctEMP.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1"
+				"     mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Country,",
+				"          DeptName,",
+				"          JoinDate",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink2"
 			]
 		}
 	}
