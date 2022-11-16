@@ -8,9 +8,6 @@
 		"parameters": {
 			"Schema": {
 				"type": "string"
-			},
-			"TableName": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -19,10 +16,6 @@
 		"typeProperties": {
 			"schema": {
 				"value": "@dataset().Schema",
-				"type": "Expression"
-			},
-			"table": {
-				"value": "@dataset().TableName",
 				"type": "Expression"
 			}
 		}
