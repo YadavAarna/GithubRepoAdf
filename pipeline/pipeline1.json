@@ -58,7 +58,16 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().TABLE_SCHEMA}.@{'<TableName>'}"
+								},
+								{
+									"name": "Destination",
+									"value": "opaarnacontainer/AllSQLTable/@{concat(item().TABLE_SCHEMA,'_',item().TABLE_NAME,'.csv')\n}"
+								}
+							],
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
