@@ -18,15 +18,36 @@
 						"referenceName": "DelimitedTextop",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "LogSink"
 				}
 			],
 			"transformations": [
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     ADFName as string,",
+				"     PipeLineName as string,",
+				"     Status as string,",
+				"     TriggerName as string,",
+				"     RunID as string,",
+				"     FileName as string",
+				"}",
 				"source(output(",
 				"          EmpID as integer,",
 				"          Name as string,",
@@ -42,12 +63,38 @@
 				"Dupsrc aggregate(groupBy(EmpID),",
 				"     each(match(name!='EmpID'), $$ = first($$)),",
 				"     partitionBy('hash', 1)) ~> aggregate1",
+				"aggregate1 derive(ADFName = $ADFName,",
+				"          PipleineName = $PipeLineName,",
+				"          Status = $Status,",
+				"          TriggerName = $TriggerName,",
+				"          RunID = $RunID,",
+				"     partitionBy('hash', 1)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          ADFName,",
+				"          PipleineName,",
+				"          Status,",
+				"          TriggerName,",
+				"          RunID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:['DistinctEMP.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1"
+				"     mapColumn(",
+				"          EmpID,",
+				"          Name,",
+				"          Country,",
+				"          DeptName,",
+				"          JoinDate",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink2",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> LogSink"
 			]
 		}
 	}

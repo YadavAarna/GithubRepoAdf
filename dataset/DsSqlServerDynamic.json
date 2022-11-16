@@ -1,0 +1,12 @@
+{
+	"name": "DsSqlServerDynamic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LsSqlServerOnPrem",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
