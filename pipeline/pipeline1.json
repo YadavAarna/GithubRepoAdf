@@ -70,7 +70,13 @@
 							"inputs": [
 								{
 									"referenceName": "DsCopySqlServerTableDynamic",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": {
+											"value": "@item().TABLE_SCHEMA",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
