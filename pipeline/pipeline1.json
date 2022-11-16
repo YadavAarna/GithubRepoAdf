@@ -103,6 +103,10 @@
 										"Schema": {
 											"value": "@item().TABLE_SCHEMA",
 											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@item().TABLE_NAME",
+											"type": "Expression"
 										}
 									}
 								}
