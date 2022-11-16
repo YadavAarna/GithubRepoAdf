@@ -7,9 +7,37 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADFAarna"
 		},
+		"LsAmazonS3src_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'LsAmazonS3src'"
+		},
 		"LsAzureBlobSCsv_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LsAzureBlobSCsv'"
+		},
+		"LsAzureBlobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LsAzureBlobStorage'"
+		},
+		"LsBlobXsl_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LsBlobXsl'"
+		},
+		"LsOpS3file_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'LsOpS3file'"
+		},
+		"LsSqlServerOnPrem_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LsSqlServerOnPrem'"
+		},
+		"LsAmazonS3src_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIAUKYZOZ62644LNF52"
+		},
+		"LsOpS3file_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIAUKYZOZ62644LNF52"
 		},
 		"containerUri": {
 			"type": "string",
@@ -38,12 +66,73 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"LsAmazonS3src_secretAccessKey": {
+						"value": "[parameters('LsAmazonS3src_secretAccessKey')]"
+					},
 					"LsAzureBlobSCsv_connectionString": {
 						"value": "[parameters('LsAzureBlobSCsv_connectionString')]"
+					},
+					"LsAzureBlobStorage_connectionString": {
+						"value": "[parameters('LsAzureBlobStorage_connectionString')]"
+					},
+					"LsBlobXsl_connectionString": {
+						"value": "[parameters('LsBlobXsl_connectionString')]"
+					},
+					"LsOpS3file_secretAccessKey": {
+						"value": "[parameters('LsOpS3file_secretAccessKey')]"
+					},
+					"LsAmazonS3src_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('LsAmazonS3src_properties_typeProperties_accessKeyId')]"
+					},
+					"LsOpS3file_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('LsOpS3file_properties_typeProperties_accessKeyId')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "ADFAarna_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LsSqlServerOnPrem_connectionString": {
+						"value": "[parameters('LsSqlServerOnPrem_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADFAarna_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "ADFAarna_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADFAarna_ArmTemplate_1')]"
+			]
 		}
 	]
 }

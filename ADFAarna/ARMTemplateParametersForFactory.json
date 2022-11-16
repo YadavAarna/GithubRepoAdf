@@ -5,8 +5,29 @@
 		"factoryName": {
 			"value": "ADFAarna"
 		},
+		"LsAmazonS3src_secretAccessKey": {
+			"value": ""
+		},
 		"LsAzureBlobSCsv_connectionString": {
 			"value": ""
+		},
+		"LsAzureBlobStorage_connectionString": {
+			"value": ""
+		},
+		"LsBlobXsl_connectionString": {
+			"value": ""
+		},
+		"LsOpS3file_secretAccessKey": {
+			"value": ""
+		},
+		"LsSqlServerOnPrem_connectionString": {
+			"value": ""
+		},
+		"LsAmazonS3src_properties_typeProperties_accessKeyId": {
+			"value": "AKIAUKYZOZ62644LNF52"
+		},
+		"LsOpS3file_properties_typeProperties_accessKeyId": {
+			"value": "AKIAUKYZOZ62644LNF52"
 		}
 	}
 }
